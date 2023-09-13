@@ -4,7 +4,7 @@
 
 `PPL.LLM` is a LLM(Large Language Mode) Inference System provided by OpenPPL.
 
-![SYSTEM_OVERVIEW](https://github.com/openppl-public/ppl.nn.llm/blob/master/docs/system_overview.png)
+![SYSTEM_OVERVIEW](docs/system_overview.png)
 
 The system consists of 4 parts:
 
@@ -24,11 +24,13 @@ The tutorials introduced below are independent of each other, you only need to c
 ## Introductions
 
 ### `ppl.pmx`
+
 `PMX` is a open source format for AI models launched by OpenPPL. It provides a set of standard operator specification documents and the corresponding functional Python API for each operator, making it easy for us to use the `PMX` operator to build the model we need in Python.
 
 At present, it is mainly responsible for the expression of LLM model structure. OpenPPL has established an official LLM model zoo in `ppl.pmx` to provide users with some out-of-the-box open source models. It also provides conversion tools for models from different communities to `PMX` models, tensor parallel splitting tool and merging tool for `PMX` model.
 
 #### Links
+
 - [Github](https://github.com/openppl-public/ppl.pmx)
 - [Model Zoo](https://github.com/openppl-public/ppl.pmx/tree/master/model_zoo)
 - [Example of testing and exporting meta LLaMA](https://github.com/openppl-public/ppl.pmx/blob/master/model_zoo/llama/facebook/README.md)
@@ -43,6 +45,7 @@ At present, it is mainly responsible for the expression of LLM model structure. 
 3. Scheduling optimization. Reduce unnecessary request queue inquiries when the hardware is fully loaded.
 
 #### Links
+
 - [Github](https://github.com/openppl-public/ppl.llm.serving)
 - [Launch a LLaMA Text Genarate Server](https://github.com/openppl-public/ppl.llm.serving#quick-start)
 
@@ -51,6 +54,7 @@ At present, it is mainly responsible for the expression of LLM model structure. 
 `ppl.nn.llm` is a ​​LLM inference engine based on `ppl.nn`. It is mainly responsible for inferring models in PMX format. And performing a series of optimizations, including memory management, graph optimization, algorithm selection, etc. At the same time, it is a multi-platform framework that supports multiple back-end adaptations, providing the `PMX` model with the ability to extend on heterogeneous platforms.
 
 #### Links
+
 - [Github](https://github.com/openppl-public/ppl.nn.llm)
 - [Run LLaMA inference single step](https://github.com/openppl-public/ppl.nn.llm#quick-start)
 
@@ -61,4 +65,5 @@ At present, it is mainly responsible for the expression of LLM model structure. 
 Currently we provide the kernel library of CUDA architecture, and will support more heterogeneous platforms in the future.
 
 #### Links
+
 - [CUDA Kernel Github](https://github.com/openppl-public/ppl.llm.kernel.cuda)
