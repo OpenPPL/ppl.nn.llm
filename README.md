@@ -2,9 +2,9 @@
 
 `ppl.nn.llm` is a part of `PPL.LLM` system.
 
-![SYSTEM_OVERVIEW](https://github.com/openppl-public/ppl.nn.llm/blob/master/docs/system_overview.png)
+![SYSTEM_OVERVIEW](docs/system_overview.png)
 
-**We recommend users who are new to this project to read the [Overview of system](https://github.com/openppl-public/ppl.nn.llm/blob/master/docs/system_overview.md).**
+**We recommend users who are new to this project to read the [Overview of system](docs/system_overview.md).**
 
 `ppl.nn.llm` is a collection of Large Language Models(LLM) inferencing engines based on [ppl.nn](https://github.com/openppl-public/ppl.nn).
 
