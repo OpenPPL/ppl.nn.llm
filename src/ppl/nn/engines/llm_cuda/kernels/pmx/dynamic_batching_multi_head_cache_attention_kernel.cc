@@ -139,15 +139,17 @@ ppl::common::RetCode DynamicBatchingMultiHeadCacheAttentionKernel::DoExecute(Ker
     int64_t cache_stride_h = 0;
     int64_t cache_stride_kv = 0;
     
+    
     if (param_->cache_layout == 0) {
         // (MaxT,L,2,H,Dh)
+        const int64_t max_tokens = cache->GetShape()->GetDim(0);
         cache_stride_s = param_->num_layer * 2 * param_->num_kv_heads * param_->head_dim;
         cache_stride_l = 2 * param_->num_kv_heads * param_->head_dim;
         cache_stride_h = param_->head_dim;
         cache_stride_kv = param_->num_kv_heads * param_->head_dim;
     } else if (param_->cache_layout == 3) {
-        const int64_t max_tokens = cache->GetShape()->GetDim(3);
         // (L,2,H,MaxT,Dh)
+        const int64_t max_tokens = cache->GetShape()->GetDim(3);
         cache_stride_s = param_->head_dim;
         cache_stride_l = 2 * param_->num_kv_heads * max_tokens * param_->head_dim;
         cache_stride_h = max_tokens * param_->head_dim;
@@ -156,7 +158,7 @@ ppl::common::RetCode DynamicBatchingMultiHeadCacheAttentionKernel::DoExecute(Ker
         LOG(ERROR) << "currently only support cache_layout == 0 or cache_layout == 3";
         return ppl::common::RC_UNSUPPORTED;
     }
-    const int64_t max_tokens = cache->GetShape()->GetDim(0);
+    
 
     return ppl::kernel::llm::cuda::pmx::dynamic_batch_multi_head_cache_attention(
         GetStream(),
@@ -188,7 +190,6 @@ ppl::common::RetCode DynamicBatchingMultiHeadCacheAttentionKernel::DoExecute(Ker
         cache_stride_l,
         cache_stride_h,
         cache_stride_kv,
-        max_tokens,
         cache->GetBufferPtr(),
         scale->GetBufferPtr(),
         attn_output->GetShape(),
