@@ -18,6 +18,7 @@
 #include "kernel.h"
 #include "opt_graph.h"
 #include "opt_kernel_creator_manager.h"
+#include "opt_pass_manager.h"
 
 #include "ppl/nn/engines/utils.h" // LoadConstants()
 #include "ppl/nn/common/logger.h"
@@ -90,6 +91,13 @@ RetCode OptGraph::Optimize(const utils::SharedResource& resource, LlmCudaDevice*
     rc = InitOps(partition_info_->kernels, options);
     if (rc != RC_SUCCESS) {
         LOG(ERROR) << "InitOps failed: " << GetRetCodeStr(rc);
+        return rc;
+    }
+
+    LOG(INFO) << "Processing I8I8Quantization...";
+    rc = OptPassManager::GetInstance()->Apply("", "I8I8Quantization", options).retcode;
+    if (rc != RC_SUCCESS) {
+        LOG(ERROR) << "I8I8Quantization failed: " << GetRetCodeStr(rc);
         return rc;
     }
 
