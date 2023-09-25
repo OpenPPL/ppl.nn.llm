@@ -79,7 +79,11 @@ static RetCode InitOps(std::map<nodeid_t, std::unique_ptr<OptKernel>>& kernels, 
     return RC_SUCCESS;
 }
 
-RetCode OptGraph::Optimize(const utils::SharedResource& resource, LlmCudaDevice* device) {
+RetCode OptGraph::Optimize(
+    const utils::SharedResource& resource,
+    const EngineOptions& engine_options,
+    LlmCudaDevice* device)
+{
     OptKernelOptions options;
     options.resource = &resource;
     options.graph = graph_;
@@ -94,11 +98,13 @@ RetCode OptGraph::Optimize(const utils::SharedResource& resource, LlmCudaDevice*
         return rc;
     }
 
-    LOG(INFO) << "Processing I8I8Quantization...";
-    rc = OptPassManager::GetInstance()->Apply("", "I8I8Quantization", options).retcode;
-    if (rc != RC_SUCCESS) {
-        LOG(ERROR) << "I8I8Quantization failed: " << GetRetCodeStr(rc);
-        return rc;
+    if (engine_options.quant_method == QUANT_METHOD_ONLINE_I8I8) {
+        LOG(INFO) << "Processing I8I8Quantization...";
+        rc = OptPassManager::GetInstance()->Apply("", "I8I8Quantization", options).retcode;
+        if (rc != RC_SUCCESS) {
+            LOG(ERROR) << "I8I8Quantization failed: " << GetRetCodeStr(rc);
+            return rc;
+        }
     }
 
     rc = utils::LoadConstants(*graph_, device, &partition_info_->constants);

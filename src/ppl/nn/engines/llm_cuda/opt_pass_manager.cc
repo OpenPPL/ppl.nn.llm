@@ -15,7 +15,7 @@
 // specific language governing permissions and limitations
 // under the License.
 
-#include "passes/i8i8/quantize_linear_pass.h"
+#include "passes/i8i8/quantization_pass.h"
 
 #include "opt_pass_manager.h"
 
@@ -75,7 +75,7 @@ OptPassManager::~OptPassManager() {
 }
 
 OptPassManager::OptPassManager() {
-    Register("", "I8I8Quantization", i8i8::QuantizeLinearPass);
+    Register("", "I8I8Quantization", i8i8::QuantizationPass);
 }
 
 

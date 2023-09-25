@@ -129,6 +129,7 @@ ppl::common::RetCode I8I8ColumnParallelLinearKernel::DoExecute(KernelExecContext
         gather_buffer,
         use_workspace ? GetCudaDevice()->GetCublasWorkspaceSize() : 0,
         use_workspace ? GetCudaDevice()->GetCubalsWorkspace() : nullptr,
+        GetCudaDevice()->GetCublasAlgoCache(),
         output_shape,
         output->GetBufferPtr()
     );

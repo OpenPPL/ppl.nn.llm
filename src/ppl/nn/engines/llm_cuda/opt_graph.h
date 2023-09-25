@@ -23,13 +23,14 @@
 #include "ppl/nn/ir/graph.h"
 #include "ppl/nn/runtime/runtime_partition_info.h"
 #include "ppl/nn/utils/shared_resource.h"
+#include "ppl/nn/engines/llm_cuda/engine_options.h"
 
 namespace ppl { namespace nn { namespace llm { namespace cuda {
 
 class OptGraph final {
 public:
     ppl::common::RetCode Init(const utils::SharedResource&, ir::Graph*, RuntimePartitionInfo*);
-    ppl::common::RetCode Optimize(const utils::SharedResource&, LlmCudaDevice*);
+    ppl::common::RetCode Optimize(const utils::SharedResource&, const EngineOptions&, LlmCudaDevice*);
 
 private:
     ir::Graph* graph_ = nullptr;

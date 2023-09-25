@@ -15,7 +15,7 @@
 // specific language governing permissions and limitations
 // under the License.
 
-#include "quantize_linear_pass.h"
+#include "quantization_pass.h"
 
 #include "ppl/nn/params/pmx/column_parallel_linear_param.h"
 
@@ -490,7 +490,7 @@ static OptPassStatus QuantizeColunmParallelLinear(ir::Node* linear_node, const O
     }
 
     // TODO waiting for dq op to impl bias support
-    if (param->gather_output == false && param->bias_term == false && out_features_per_part >= in_features) {
+    if (param->gather_output == false && param->bias_term == false) {
         LOG(DEBUG) << "processing i8i8 for ColumnParallelLinear[" << linear_node->GetName() << "]";
         status.graph_modified = true;
         status.retcode = QuantizeLinear(linear_node, options, in_features, out_features_per_part, param->bias_term);
@@ -530,7 +530,7 @@ static OptPassStatus QuantizeRowParallelLinear(ir::Node* linear_node, const OptK
     }
 
     // TODO waiting for dq op to impl bias support
-    if (param->bias_term == false && out_features > in_features_per_part) {
+    if (param->bias_term == false) {
         LOG(DEBUG) << "processing i8i8 for RowParallelLinear[" << linear_node->GetName() << "]";
         status.graph_modified = true;
         status.retcode = QuantizeLinearSelfDequant(linear_node, options, in_features_per_part, out_features);
@@ -556,7 +556,7 @@ static OptPassStatus QuantizeRowParallelLinear(ir::Node* linear_node, const OptK
     return status;
 }
 
-OptPassStatus QuantizeLinearPass(const OptKernelOptions& options)
+OptPassStatus QuantizationPass(const OptKernelOptions& options)
 {
     OptPassStatus status = {ppl::common::RC_SUCCESS, false};
 

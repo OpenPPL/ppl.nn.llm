@@ -84,7 +84,7 @@ ppl::common::RetCode I8I8RowParallelLinearKernel::DoExecute(KernelExecContext* c
         return ppl::common::RC_UNSUPPORTED;
     }
 
-    uint64_t quant_buffer_size = output_shape->CalcElementsExcludingPadding() * sizeof(int32_t);
+    uint64_t quant_buffer_size = output_shape->CalcElementsIncludingPadding() * sizeof(int32_t);
     void *quant_buffer = nullptr;
 
     BufferDesc tmp_buffer_desc;
@@ -125,6 +125,7 @@ ppl::common::RetCode I8I8RowParallelLinearKernel::DoExecute(KernelExecContext* c
         quant_buffer,
         use_workspace ? GetCudaDevice()->GetCublasWorkspaceSize() : 0,
         use_workspace ? GetCudaDevice()->GetCubalsWorkspace() : nullptr,
+        GetCudaDevice()->GetCublasAlgoCache(),
         output_shape,
         output->GetBufferPtr()
     );
