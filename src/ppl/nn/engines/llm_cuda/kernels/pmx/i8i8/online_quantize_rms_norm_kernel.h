@@ -15,37 +15,30 @@
 // specific language governing permissions and limitations
 // under the License.
 
-#include "online_dequantize_op.h"
+#ifndef _ST_HPC_PPL_NN_ENGINES_LLM_CUDA_KERNELS_PMX_I8I8_ONLINE_QUANTIZE_RMS_NORM_KERNEL_H_
+#define _ST_HPC_PPL_NN_ENGINES_LLM_CUDA_KERNELS_PMX_I8I8_ONLINE_QUANTIZE_RMS_NORM_KERNEL_H_
 
-#include "ppl/nn/engines/llm_cuda/kernels/pmx/i8i8/online_dequantize_kernel.h"
-#include "ppl/nn/common/logger.h"
-
-using namespace std;
-using namespace ppl::common;
-
+#include "ppl/nn/engines/llm_cuda/kernel.h"
+#include "ppl/nn/params/pmx/rms_norm_param.h"
 
 namespace ppl { namespace nn { namespace llm { namespace cuda { namespace pmx {
 
-RetCode I8I8OnlineDequantizeOp::DoInit(const OptKernelOptions& options) {
+class I8I8OnlineQuantizeRMSNormKernel : public LlmCudaKernel {
+public:
+    I8I8OnlineQuantizeRMSNormKernel(const ir::Node* node) : LlmCudaKernel(node) {}
 
-    infer_type_and_format_func_ = [this](InputOutputInfo* info) -> RetCode {
-        auto scale_outer_shape = info->GetInput<TensorImpl>(1)->GetShape();
-        auto output_shape = info->GetOutput<TensorImpl>(0)->GetShape();
+    void SetParam(const ppl::nn::pmx::RMSNormParam* p) {
+        param_ = p;
+    }
 
-        output_shape->SetDataFormat(DATAFORMAT_NDARRAY);
-        output_shape->SetDataType(scale_outer_shape->GetDataType());
+private:
+    ppl::common::RetCode DoExecute(KernelExecContext*) override;
 
-        return RC_SUCCESS;
-    };
-    infer_dims_func_ = GenericInferDims;
+private:
+    const ppl::nn::pmx::RMSNormParam* param_ = nullptr;
 
-    return RC_SUCCESS;
-}
-
-KernelImpl* I8I8OnlineDequantizeOp::CreateKernelImpl() const {
-    return CreateKernelImplWithParam<I8I8OnlineDequantizeKernel>(&param_);
-}
-
-
+};
 
 }}}}} // namespace ppl::nn::llm::cuda::pmx
+
+#endif

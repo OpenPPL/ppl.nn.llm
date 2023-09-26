@@ -47,7 +47,7 @@ RetCode I8I8ColumnParallelLinearOp::DoInit(const OptKernelOptions& options) {
             output_shape->SetDataType(DATATYPE_INT32);
         }
         return RC_SUCCESS;
-    };;
+    };
     infer_dims_func_ = [this](InputOutputInfo* info) -> RetCode {
         return nn::pmx::ReshapeColumnParallelLinear(info, param_.get(), nccl_param_->size);
     };

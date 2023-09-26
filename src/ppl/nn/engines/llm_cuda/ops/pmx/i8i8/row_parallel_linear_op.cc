@@ -42,7 +42,7 @@ RetCode I8I8RowParallelLinearOp::DoInit(const OptKernelOptions& options) {
         output_shape->SetDataFormat(DATAFORMAT_NDARRAY);
         output_shape->SetDataType(DATATYPE_FLOAT16);
         return RC_SUCCESS;
-    };;
+    };
     infer_dims_func_ = [this](InputOutputInfo* info) -> RetCode {
         return nn::pmx::ReshapeRowParallelLinear(info, param_.get(), nccl_param_->size);
     };

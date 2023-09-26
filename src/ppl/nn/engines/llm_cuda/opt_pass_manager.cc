@@ -16,6 +16,7 @@
 // under the License.
 
 #include "passes/i8i8/quantization_pass.h"
+#include "passes/i8i8/fuse_rms_norm_pass.h"
 
 #include "opt_pass_manager.h"
 
@@ -76,6 +77,7 @@ OptPassManager::~OptPassManager() {
 
 OptPassManager::OptPassManager() {
     Register("", "I8I8Quantization", i8i8::QuantizationPass);
+    Register("i8i8.fuse", "FuseRMSNorm", i8i8::FuseRMSNormPass);
 }
 
 

@@ -105,6 +105,11 @@ RetCode OptGraph::Optimize(
             LOG(ERROR) << "I8I8Quantization failed: " << GetRetCodeStr(rc);
             return rc;
         }
+        rc = OptPassManager::GetInstance()->ApplyByDomain("i8i8.fuse", options);
+        if (rc != RC_SUCCESS) {
+            LOG(ERROR) << "I8I8Fuse failed: " << GetRetCodeStr(rc);
+            return rc;
+        }
     }
 
     rc = utils::LoadConstants(*graph_, device, &partition_info_->constants);
