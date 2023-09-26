@@ -490,7 +490,7 @@ static OptPassStatus QuantizeColunmParallelLinear(ir::Node* linear_node, const O
     }
 
     // TODO waiting for dq op to impl bias support
-    if (param->gather_output == false && param->bias_term == false && out_features_per_part >= 10000) {
+    if (param->gather_output == false && param->bias_term == false && out_features_per_part >= 7680) {
         LOG(DEBUG) << "processing i8i8 for ColumnParallelLinear[" << linear_node->GetName() << "]";
         status.graph_modified = true;
         status.retcode = QuantizeLinear(linear_node, options, in_features, out_features_per_part, param->bias_term);
@@ -530,7 +530,7 @@ static OptPassStatus QuantizeRowParallelLinear(ir::Node* linear_node, const OptK
     }
 
     // TODO waiting for dq op to impl bias support
-    if (param->bias_term == false && out_features >= 10000) {
+    if (param->bias_term == false && out_features >= 10240) {
         LOG(DEBUG) << "processing i8i8 for RowParallelLinear[" << linear_node->GetName() << "]";
         status.graph_modified = true;
         status.retcode = QuantizeLinearSelfDequant(linear_node, options, in_features_per_part, out_features);
