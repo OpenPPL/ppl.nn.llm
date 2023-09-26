@@ -100,12 +100,15 @@ RetCode OptGraph::Optimize(
 
     if (engine_options.quant_method == QUANT_METHOD_ONLINE_I8I8) {
         LOG(INFO) << "Processing I8I8Quantization...";
-        rc = OptPassManager::GetInstance()->Apply("", "I8I8Quantization", options).retcode;
-        if (rc != RC_SUCCESS) {
+        auto prc = OptPassManager::GetInstance()->Apply("", "I8I8Quantization", options);
+        if (prc.retcode != RC_SUCCESS) {
             LOG(ERROR) << "I8I8Quantization failed: " << GetRetCodeStr(rc);
-            return rc;
+            return prc.retcode;
         }
-        rc = OptPassManager::GetInstance()->ApplyByDomain("i8i8.fuse", options);
+        if (!prc.graph_modified) {
+            LOG(INFO) << "I8I8Quantization: nothing has been changed.";
+        }
+        auto rc = OptPassManager::GetInstance()->ApplyByDomain("i8i8.fuse", options);
         if (rc != RC_SUCCESS) {
             LOG(ERROR) << "I8I8Fuse failed: " << GetRetCodeStr(rc);
             return rc;
