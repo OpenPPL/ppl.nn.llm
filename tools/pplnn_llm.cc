@@ -743,6 +743,7 @@ static void PrintInputInfo(const Runtime* runtime) {
         auto tensor = runtime->GetInputTensor(i);
         LOG(INFO) << "input[" << i << "]:";
         LOG(INFO) << "    name: " << tensor->GetName();
+        LOG(INFO) << "    device: " << tensor->GetDeviceContext()->GetType().str;
 
         string dims_str;
         auto shape = tensor->GetShape();
@@ -780,6 +781,7 @@ static void PrintOutputInfo(const Runtime* runtime) {
         auto tensor = runtime->GetOutputTensor(i);
         LOG(INFO) << "output[" << i << "]:";
         LOG(INFO) << "    name: " << tensor->GetName();
+        LOG(INFO) << "    device: " << tensor->GetDeviceContext()->GetType().str;
 
         string dims_str;
         auto shape = tensor->GetShape();
