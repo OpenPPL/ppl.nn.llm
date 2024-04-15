@@ -1,8 +1,8 @@
 #!/bin/bash
 
 MODEL_TYPE="llama"
-MODEL_DIR="/mnt/hpc/shengyunrui/model_card/llama_7b_ppl"
-MODEL_PARAM_PATH="/mnt/hpc/shengyunrui/model_card/llama_7b_ppl/params.json"
+MODEL_DIR="xxx/llama_7b_ppl"
+MODEL_PARAM_PATH="xxx/llama_7b_ppl/params.json"
 TENSOR_PARALLEL_SIZE=1
 TOP_P=0.0
 TOP_K=1
@@ -17,8 +17,10 @@ BATCH_SIZE_LIST=(1 2 4 8 16 32 64 128 256)
 
 QUANT_METHOD="online_i8i8"
 
+BENCHMARK_LLM="xxx/ppl.nn.llm/pplnn-build/tools/benchmark_llama"
+
 for BATCH_SIZE in ${BATCH_SIZE_LIST[@]}; do
-    ~/ppl.nn.llm/pplnn-build/tools/benchmark_llama \
+    $BENCHMARK_LLM \
         --model-type $MODEL_TYPE \
         --model-dir $MODEL_DIR \
         --model-param-path $MODEL_PARAM_PATH \
@@ -39,7 +41,7 @@ done
 # for BATCH_SIZE in ${BATCH_SIZE_LIST[@]}; do
 #     INPUT_FILE="${DATA_FILE_BASE}/tokens_input_${INPUT_LEN}"
 #     OUTPUT_FILE="${DATA_FILE_BASE}/tokens_output_${INPUT_LEN}_${GENERATION_LEN}"
-#     ~/ppl.nn.llm/pplnn-build/tools/benchmark_llama \
+#     $BENCHMARK_LLM \
 #         --model-type $MODEL_TYPE \
 #         --model-dir $MODEL_DIR \
 #         --model-param-path $MODEL_PARAM_PATH \
